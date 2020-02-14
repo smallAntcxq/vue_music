@@ -1,32 +1,97 @@
 <template>
   <div id="app">
-    <div id="nav">
-      <router-link to="/">Home</router-link> |
-      <router-link to="/about">About</router-link>
-    </div>
-    <router-view/>
+    <router-view></router-view>
+    <MusicPlay></MusicPlay>
+
+    <mt-tabbar v-if="flag" v-model="selected" id="tabbar" ref="tabbar">
+      <mt-tab-item id="Music">
+        <router-link to="/" tag="span">
+          <i class="iconfont icon-yinyue" />
+          <div class="mt-list">音乐馆</div>
+        </router-link>
+      </mt-tab-item>
+      <mt-tab-item id="Singer">
+        <router-link to="/singer" tag="span">
+          <i class="iconfont icon-geshou"></i>
+          <div class="mt-list">歌手</div>
+        </router-link>
+      </mt-tab-item>
+      <mt-tab-item id="Ranking">
+        <router-link to="/ranking" tag="span">
+          <i class="iconfont icon-paihangbang"></i>
+          <div class="mt-list">排行</div>
+        </router-link>
+      </mt-tab-item>
+      <mt-tab-item id="Person">
+        <router-link to="/person" tag="span">
+          <i class="iconfont icon-wode1" />
+          <div class="mt-list">我的</div>
+        </router-link>
+      </mt-tab-item>
+    </mt-tabbar>
   </div>
 </template>
 
+<script>
+import MusicPlay from "./components/music/musicplay.vue";
+export default {
+  data: function() {
+    return {
+      selected: "Music",
+      tabType: true,
+      transitionName: "",
+      isBack: false,
+      flag: true
+    };
+  },
+  methods: {},
+  watch: {
+    "$route.path": function(newVal) {
+      var routerArr = ["/", "/singer", "/person", "/ranking"];
+      if (routerArr.includes(newVal)) {
+        this.flag = true;
+      } else {
+        this.flag = false;
+      }
+    }
+  },
+
+  components: {
+    MusicPlay
+  }
+};
+</script>
+
 <style lang="less">
-#app {
-  font-family: 'Avenir', Helvetica, Arial, sans-serif;
-  -webkit-font-smoothing: antialiased;
-  -moz-osx-font-smoothing: grayscale;
-  text-align: center;
-  color: #2c3e50;
+body {
+  background-color: rgb(63, 61, 61);
+}
+* {
+  padding: 0;
+  margin: 0;
+  // touch-action: none;
+  // background-color: rgb(56, 55, 55);
+}
+// #app{
+// padding-bottom:52px;
+// }
+
+.mint-tabbar {
+  position: fixed;
+  bottom: 0px;
+  background-color: rgb(63, 61, 61);
+  background-size: 0;
+}
+.mint-tabbar > .mint-tab-item.is-selected {
+  color: #ffcd32;
+  background-color: rgb(63, 61, 61);
 }
 
-#nav {
-  padding: 30px;
-
-  a {
-    font-weight: bold;
-    color: #2c3e50;
-
-    &.router-link-exact-active {
-      color: #42b983;
-    }
-  }
+.mint-tab-item {
+  color: gray;
+}
+.mt-list {
+  height: 22px;
+  line-height: 22px;
 }
 </style>
